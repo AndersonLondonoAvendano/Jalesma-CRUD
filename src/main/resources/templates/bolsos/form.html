@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<head>
+    <title>Formulario de Bolso</title>
+</head>
+<body>
+<main th:fragment="content">
+
+    <div class="page-header animate-fade-in">
+        <h1>
+            <i class="fas fa-edit me-3"></i>
+            <span th:text="${bolso.id != null ? 'Editar Bolso' : 'Nuevo Bolso'}">Nuevo Bolso</span>
+        </h1>
+        <p th:text="${bolso.id != null ? 'Actualizar información del bolso' : 'Registrar un nuevo bolso'}"></p>
+    </div>
+
+    <div class="card animate-fade-in">
+        <div class="card-header"><i class="fas fa-file-alt me-2"></i>Información del Bolso</div>
+        <div class="card-body">
+
+            <form th:action="@{/bolsos}" th:object="${bolso}" method="post">
+
+                <input type="hidden" th:field="*{id}" th:if="${bolso.id != null}"/>
+
+                <div class="row">
+                    <!-- Modelo -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label"><strong>Modelo *</strong></label>
+                        <input type="text" class="form-control form-control-lg"
+                               th:field="*{modelo}" placeholder="Ej: Clásico Premium" required>
+                        <small class="text-muted">Ingrese el modelo del bolso</small>
+                    </div>
+
+                    <!-- Color -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label"><strong>Color *</strong></label>
+                        <input type="text" class="form-control form-control-lg"
+                               th:field="*{color}" placeholder="Ej: Negro" required>
+                        <small class="text-muted">Ingrese el color del bolso</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Tamaño -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label"><strong>Tamaño *</strong></label>
+                        <input type="text" class="form-control form-control-lg"
+                               th:field="*{tamanio}" placeholder="Ej: Mediano" required>
+                        <small class="text-muted">Ejemplo: Pequeño, Mediano, Grande</small>
+                    </div>
+
+                    <!-- Precio -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label"><strong>Precio *</strong></label>
+                        <input type="number" class="form-control form-control-lg"
+                               th:field="*{precio}" min="0" placeholder="0" required>
+                        <small class="text-muted">Ingrese el precio del bolso</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Marca -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label"><strong>Marca *</strong></label>
+                        <select class="form-select form-select-lg" th:field="*{marca.id}" required>
+                            <option value="">-- Seleccione una marca --</option>
+                            <option th:each="m : ${marcas}" th:value="${m.id}" th:text="${m.nombre}"></option>
+                        </select>
+                        <small class="text-muted">Seleccione la marca del bolso</small>
+                    </div>
+
+                    <!-- Materiales (Multiple) -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label"><strong>Materiales *</strong></label>
+                        <select class="form-select form-select-lg" th:field="*{materiales}" multiple required>
+                            <option th:each="mat : ${materiales}" th:value="${mat.id}" th:text="${mat.tipo}"></option>
+                        </select>
+                        <small class="text-muted">Puede seleccionar varios materiales (Ctrl + Click)</small>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="mt-4 d-flex justify-content-between">
+                    <a th:href="@{/bolsos}" class="btn btn-lg btn-secondary">
+                        <i class="fas fa-times me-2"></i>Cancelar
+                    </a>
+
+                    <button type="submit" class="btn btn-lg btn-warning">
+                        <i class="fas fa-save me-2"></i>
+                        <span th:text="${bolso.id != null ? 'Actualizar' : 'Guardar'}">Guardar</span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

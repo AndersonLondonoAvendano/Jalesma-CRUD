@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<head>
+    <title>Formulario Marca</title>
+</head>
+<body>
+<main th:fragment="content">
+
+    <div class="page-header animate-fade-in">
+        <h1>
+            <i class="fas fa-edit me-3"></i>
+            <span th:text="${marca.id != null ? 'Editar Marca' : 'Nueva Marca'}"></span>
+        </h1>
+        <p th:text="${marca.id != null ? 'Actualizar información de la marca' : 'Registrar una nueva marca'}"></p>
+    </div>
+
+    <div class="card animate-fade-in">
+        <div class="card-header"><i class="fas fa-file-alt me-2"></i>Información de la Marca</div>
+
+        <div class="card-body">
+            <form th:action="@{/marcas}" th:object="${marca}" method="post">
+
+                <input type="hidden" th:field="*{id}" th:if="${marca.id != null}" />
+
+                <div class="mb-4">
+                    <label class="form-label"><strong>Nombre de la Marca *</strong></label>
+                    <input type="text" class="form-control form-control-lg" th:field="*{nombre}"
+                           placeholder="Ej: Gucci, Prada, Totto" required>
+                    <small class="text-muted">Ingrese el nombre oficial de la marca</small>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a th:href="@{/marcas}" class="btn btn-lg btn-secondary">
+                        <i class="fas fa-times me-2"></i>Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-lg btn-warning">
+                        <i class="fas fa-save me-2"></i>
+                        <span th:text="${marca.id != null ? 'Actualizar' : 'Guardar'}"></span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

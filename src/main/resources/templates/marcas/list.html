@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<head>
+    <title>Listado de Marcas</title>
+</head>
+<body>
+<main th:fragment="content">
+
+    <!-- Encabezado -->
+    <div class="page-header animate-fade-in" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="page-header-content">
+            <h1><i class="fas fa-copyright me-3"></i>Listado de Marcas</h1>
+            <p>Gestión de marcas registradas en el sistema</p>
+        </div>
+        <div class="page-header-actions">
+            <a class="btn-gold" th:href="@{/marcas/nuevo}">
+                <i class="fas fa-plus me-2"></i>Registrar Nueva Marca
+            </a>
+        </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="card animate-fade-in">
+        <div class="card-header">
+            <i class="fas fa-list me-2"></i>Marcas Registradas
+        </div>
+
+        <div class="card-body p-0">
+
+            <!-- Si hay marcas -->
+            <div class="table-responsive" th:if="${marcas != null and !marcas.isEmpty()}">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                            <th><i class="fas fa-tag me-2"></i>Nombre</th>
+                            <th class="text-center"><i class="fas fa-cogs me-2"></i>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="marca : ${marcas}">
+                            <td><strong th:text="${marca.id}"></strong></td>
+                            <td th:text="${marca.nombre}"></td>
+                            <td class="text-center">
+                                <a th:href="@{/marcas/editar/{id}(id=${marca.id})}" class="btn-edit me-1">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a th:href="@{/marcas/eliminar/{id}(id=${marca.id})}" class="btn-delete"
+                                   onclick="return confirm('¿Está seguro de eliminar esta marca?')">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Si NO hay marcas -->
+            <div class="empty-state" th:if="${marcas == null or marcas.isEmpty()}">
+                <i class="fas fa-copyright"></i>
+                <h3>No hay marcas registradas</h3>
+                <p>Comienza agregando la primera marca</p>
+                <a th:href="@{/marcas/nuevo}" class="btn-gold">
+                    <i class="fas fa-plus me-2"></i>Registrar Marca
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

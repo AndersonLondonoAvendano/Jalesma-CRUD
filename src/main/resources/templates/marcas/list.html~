@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+
+<body>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 style="color:#D4AF37;">Marcas</h2>
+    <a href="/marcas/nuevo" class="btn btn-gold">Nueva Marca</a>
+</div>
+
+<div class="card p-3">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="m : ${marcas}">
+            <td th:text="${m.id}"></td>
+            <td th:text="${m.nombre}"></td>
+            <td>
+                <a th:href="@{'/marcas/editar/' + ${m.id}}" class="btn btn-warning btn-sm">Editar</a>
+                <a th:href="@{'/marcas/eliminar/' + ${m.id}}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

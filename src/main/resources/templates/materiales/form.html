@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<head>
+    <title>Formulario Material</title>
+</head>
+<body>
+<main th:fragment="content">
+
+    <div class="page-header animate-fade-in">
+        <h1>
+            <i class="fas fa-edit me-3"></i>
+            <span th:text="${material.id != null ? 'Editar Material' : 'Nuevo Material'}"></span>
+        </h1>
+        <p th:text="${material.id != null ? 'Actualizar información del material' : 'Registrar un nuevo material'}"></p>
+    </div>
+
+    <div class="card animate-fade-in">
+        <div class="card-header"><i class="fas fa-file-alt me-2"></i>Información del Material</div>
+
+        <div class="card-body">
+            <form th:action="@{/materiales}" th:object="${material}" method="post">
+
+                <input type="hidden" th:field="*{id}" th:if="${material.id != null}" />
+
+                <!-- Tipo de material -->
+                <div class="mb-4">
+                    <label class="form-label"><strong>Tipo de Material *</strong></label>
+                    <input type="text" class="form-control form-control-lg" th:field="*{tipo}"
+                           placeholder="Ej: Cuero, Lona, Sintético" required>
+                    <small class="text-muted">Ingrese el tipo de material</small>
+                </div>
+
+                <!-- Precio del material -->
+                <div class="mb-4">
+                    <label class="form-label"><strong>Precio *</strong></label>
+                    <input type="number" class="form-control form-control-lg" th:field="*{precio}" 
+                           step="0.01" min="0" placeholder="Ej: 15000" required>
+                    <small class="text-muted">Ingrese el precio del material</small>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a th:href="@{/materiales}" class="btn btn-lg btn-secondary">
+                        <i class="fas fa-times me-2"></i>Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-lg btn-warning">
+                        <i class="fas fa-save me-2"></i>
+                        <span th:text="${material.id != null ? 'Actualizar' : 'Guardar'}"></span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

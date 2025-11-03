@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<head>
+    <title>Dashboard - JALESMA</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+<main th:fragment="content">
+
+    <div class="page-header animate-fade-in">
+        <h1>Dashboard</h1>
+        <p>Panel de control principal - JALESMA</p>
+    </div>
+
+    <!-- KPIs -->
+    <div class="row animate-fade-in">
+        <div class="col-md-4 mb-4">
+            <div class="stat-card text-center">
+                <i class="fas fa-bag-shopping stat-icon"></i>
+                <h3 class="stat-value" th:text="${totalBolsos}"></h3>
+                <p class="stat-label">Bolsos Registrados</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="stat-card text-center">
+                <i class="fas fa-copyright stat-icon"></i>
+                <h3 class="stat-value" th:text="${totalMarcas}"></h3>
+                <p class="stat-label">Marcas</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="stat-card text-center">
+                <i class="fas fa-layer-group stat-icon"></i>
+                <h3 class="stat-value" th:text="${totalMateriales}"></h3>
+                <p class="stat-label">Materiales</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mt-4">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-chart-pie me-2"></i>Bolsos por Color</div>
+                <canvas id="chartColores"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-chart-bar me-2"></i>Bolsos por Rango de Precio</div>
+                <canvas id="chartPrecio"></canvas>
+            </div>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

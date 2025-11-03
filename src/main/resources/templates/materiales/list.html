@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<head>
+    <title>Listado de Materiales</title>
+</head>
+<body>
+<main th:fragment="content">
+
+    <!-- Encabezado -->
+    <div class="page-header animate-fade-in" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="page-header-content">
+            <h1><i class="fas fa-box-open me-3"></i>Listado de Materiales</h1>
+            <p>Gestión de materiales utilizados en la fabricación de bolsos</p>
+        </div>
+        <div class="page-header-actions">
+            <a class="btn-gold" th:href="@{/materiales/nuevo}">
+                <i class="fas fa-plus me-2"></i>Registrar Nuevo Material
+            </a>
+        </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="card animate-fade-in">
+        <div class="card-header">
+            <i class="fas fa-list me-2"></i>Materiales Registrados
+        </div>
+
+        <div class="card-body p-0">
+
+            <!-- Si hay materiales -->
+            <div class="table-responsive" th:if="${materiales != null and !materiales.isEmpty()}">
+                <table class="table table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                        <th><i class="fas fa-tag me-2"></i>Nombre</th>
+                        <th class="text-center"><i class="fas fa-cogs me-2"></i>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="material : ${materiales}">
+                        <td><strong th:text="${material.id}"></strong></td>
+                        <td th:text="${material.tipo}"></td>
+                        <td class="text-center">
+                            <a th:href="@{/materiales/editar/{id}(id=${material.id})}" class="btn-edit me-1">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a th:href="@{/materiales/eliminar/{id}(id=${material.id})}" 
+                               class="btn-delete"
+                               onclick="return confirm('⚠️ Se eliminará este material y todos los bolsos asociados. ¿Desea continuar?');">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Si NO hay materiales -->
+            <div class="empty-state" th:if="${materiales == null or materiales.isEmpty()}">
+                <i class="fas fa-box-open"></i>
+                <h3>No hay materiales registrados</h3>
+                <p>Comienza agregando el primer material</p>
+                <a th:href="@{/materiales/nuevo}" class="btn-gold">
+                    <i class="fas fa-plus me-2"></i>Registrar Material
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

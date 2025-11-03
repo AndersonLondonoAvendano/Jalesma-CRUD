@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<head>
+    <title>Productos</title>
+</head>
+<body>
+    <!-- Este contenido reemplazará el <main class="main-content"> del layout -->
+    <main th:fragment="content">
+        <!-- Page Header -->
+        <div class="page-header animate-fade-in" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="page-header-content">
+                <h1><i class="fas fa-briefcase me-3"></i>Listado de Bolsos</h1>
+                <p>Gestión y administración de productos</p>
+            </div>
+            <div class="page-header-actions">
+                <a class="btn-gold" th:href="@{/bolsos/nuevo}">
+                    <i class="fas fa-plus me-2"></i>Registrar Nuevo Bolso
+                </a>
+            </div>
+        </div>
+
+        <!-- Search and Filter Bar -->
+        <div class="search-filter-bar animate-fade-in">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre, marca o material...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="filter-select form-select" id="filterMarca">
+                        <option value="">Todas las marcas</option>
+                        <option th:each="marca : ${marcas}" th:value="${marca.nombre}" th:text="${marca.nombre}"></option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="filter-select form-select" id="filterMaterial">
+                        <option value="">Todos los materiales</option>
+                        <option th:each="material : ${materiales}" th:value="${material.tipo}" th:text="${material.tipo}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Table Card -->
+        <div class="card animate-fade-in">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <i class="fas fa-list me-2"></i>Productos Registrados
+                </div>
+                <div>
+                    <span class="badge bg-dark px-3 py-2">
+                        <i class="fas fa-box me-1"></i>
+                        <span th:text="${bolsos != null ? bolsos.size() : 0}">0</span> Productos
+                    </span>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <!-- Tabla cuando HAY productos -->
+                <div class="table-responsive" th:if="${bolsos != null and !bolsos.isEmpty()}">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                <th><i class="fas fa-tag me-2"></i>Modelo</th>
+                                <th><i class="fas fa-copyright me-2"></i>Marca</th>
+                                <th><i class="fas fa-layer-group me-2"></i>Materiales</th>
+                                <th><i class="fas fa-dollar-sign me-2"></i>Precio</th>
+                                <th class="text-center"><i class="fas fa-cogs me-2"></i>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="bolso : ${bolsos}">
+                                <td>
+                                    <strong th:text="${bolso.id}"></strong>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-briefcase me-2" style="color: var(--gold-primary); font-size: 1.2rem;"></i>
+                                        <span th:text="${bolso.modelo}"></span>
+                                    </div>
+                                </td>
+                                <td th:text="${bolso.marca.nombre}"></td>
+                                <td>
+                                    <span th:if="${#lists.isEmpty(bolso.materiales)}">Sin materiales</span>
+
+                                    <span th:each="mat, iterStat : ${bolso.materiales}">
+                                    <span th:text="${mat.tipo}"></span>
+                                    <span th:if="${!iterStat.last}">, </span>
+                                </span>
+
+                                </td>
+
+                                <td>
+                                    <span class="price-badge" th:text="${'$' + #numbers.formatDecimal(bolso.precio, 1, 'COMMA', 2, 'POINT')}">$1,250.00</span>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{/bolsos/editar/{id}(id=${bolso.id})}" class="btn-edit me-1" title="Editar">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    <a th:href="@{/bolsos/eliminar/{id}(id=${bolso.id})}" class="btn-delete" title="Eliminar" 
+                                       onclick="return confirm('¿Está seguro de eliminar este producto?')">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State cuando NO hay productos -->
+                <div class="empty-state" th:if="${bolsos == null or bolsos.isEmpty()}">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>No hay productos registrados</h3>
+                    <p>Comienza agregando tu primer bolso o producto al sistema</p>
+                    <a th:href="@{/bolsos/nuevo}" class="btn-gold">
+                        <i class="fas fa-plus me-2"></i>Registrar Primer Producto
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Summary -->
+        <div class="row mt-4" th:if="${bolsos != null and !bolsos.isEmpty()}">
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-briefcase" style="font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                        <h4 class="mb-1" th:text="${bolsos.size()}">12</h4>
+                        <p class="text-muted mb-0">Total Productos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-copyright" style="font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                        <h4 class="mb-1" th:text="${marcas != null ? marcas.size() : 0}">4</h4>
+                        <p class="text-muted mb-0">Marcas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-layer-group" style="font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                        <h4 class="mb-1" th:text="${materiales != null ? materiales.size() : 0}">5</h4>
+                        <p class="text-muted mb-0">Materiales</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-dollar-sign" style="font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                        <h4 class="mb-1">
+                            <span th:if="${bolsos != null and !bolsos.isEmpty()}" 
+                                  th:text="${'$' + #numbers.formatDecimal(#aggregates.avg(bolsos.![precio]), 1, 'COMMA', 2, 'POINT')}">$5,830</span>
+                            <span th:if="${bolsos == null or bolsos.isEmpty()}">$0</span>
+                        </h4>
+                        <p class="text-muted mb-0">Valor Promedio</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JavaScript para búsqueda y filtros -->
+        <script th:inline="javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('searchInput');
+                const filterMarca = document.getElementById('filterMarca');
+                const filterMaterial = document.getElementById('filterMaterial');
+                const tableRows = document.querySelectorAll('tbody tr');
+                
+                function filterTable() {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const marcaFilter = filterMarca.value.toLowerCase();
+                    const materialFilter = filterMaterial.value.toLowerCase();
+                    
+                    tableRows.forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        const matchSearch = text.includes(searchTerm);
+                        const matchMarca = !marcaFilter || text.includes(marcaFilter);
+                        const matchMaterial = !materialFilter || text.includes(materialFilter);
+                        
+                        if (matchSearch && matchMarca && matchMaterial) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+                
+                if (searchInput) searchInput.addEventListener('input', filterTable);
+                if (filterMarca) filterMarca.addEventListener('change', filterTable);
+                if (filterMaterial) filterMaterial.addEventListener('change', filterTable);
+            });
+        </script>
+    </main>
+</body>
+</html>
